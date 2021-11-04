@@ -1,0 +1,24 @@
+{
+    "name": "krystalcode/api-iterator",
+    "type": "library",
+    "description": "An iterator for browsing paged resources such as items served over API calls.",
+    "keywords": ["API", "iterator"],
+    "homepage": "https://github.com/krystalcode/php-api-iterator",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dimitris Bozelos",
+            "email": "dbozelos@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/krystalcode/php-api-iterator/issues"
+    },
+    "require": {
+        "php": "^7.3 || ^8.0"
+    },
+    "autoload": {
+        "psr-4": { "KrystalCode\\ApiIterator\\": "src/" }
+    },
+    "minimum-stability": "dev"
+}
