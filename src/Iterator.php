@@ -255,4 +255,23 @@ class Iterator implements IteratorInterface
             );
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAllItems()
+    {
+        $this->rewind();
+
+        $items = [];
+        while ($this->valid()) {
+            foreach ($this->current() as $item) {
+                $items[] = $item;
+            }
+            $this->next();
+        }
+
+        $this->rewind();
+        return $items;
+    }
 }

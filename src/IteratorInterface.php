@@ -85,4 +85,19 @@ interface IteratorInterface extends \Iterator
      *   If the given page index is invalid.
      */
     public function move(int $pageIndex): void;
+
+    /**
+     * Gets an array containing all items in a single-dimensional array.
+     *
+     * Iterates through all pages collecting their items (either from the
+     * resource or from the cache) and returns all items in an array.
+     *
+     * It moves the position to the first page at the beginning to ensure items
+     * from all pages are collected. It does not keep track of the position
+     * before the call; instead, it rewinds at the end.
+     *
+     * @return array
+     *   An array containing all items from all pages.
+     */
+    public function getAllItems();
 }
