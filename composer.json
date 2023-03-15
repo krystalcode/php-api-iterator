@@ -7,12 +7,13 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Dimitris Bozelos",
-            "email": "dbozelos@gmail.com"
+            "name": "krystalcode",
+            "homepage": "https://github.com/krystalcode"
         }
     ],
     "support": {
-        "issues": "https://github.com/krystalcode/php-api-iterator/issues"
+        "issues": "https://github.com/krystalcode/php-api-iterator/issues",
+        "source": "https://github.com/krystalcode/php-acumatica-api"
     },
     "require": {
         "php": "^7.3 || ^8.0"
