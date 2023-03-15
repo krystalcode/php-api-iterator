@@ -20,7 +20,7 @@ interface ClientInterface
      *   - page (int): The index of the page to get, if the resource supports
      *     paging.
      *   - limit (int): The number of items to get.
-     *   - bypass_iterator (bool): The items are normally return wrapped in an
+     *   - bypass_iterator (bool): The items are normally returned wrapped in an
      *     API iterator. When the `bypass_iterator` option is set to, the items
      *     should be  returned without that extra wrapper iterator i.e. in just
      *     a `\CachingIterator`.
@@ -36,7 +36,7 @@ interface ClientInterface
      *     - \CachingIterator: An iterator containing the list items; items are
      *       `stdClass` objects.
      *     - int|null|false: The total number of pages, NULL if unknown, or
-     *       FALSE if unknown but it is know that we have reached the last page.
+     *       FALSE if unknown but we know that we have reached the last page.
      *     - array: The updated query array. This may be used to update the
      *       token or the URL that will be used to get the next page.
      *   - If the endpoint does not support paging, a `\CachingIterator`
