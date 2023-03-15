@@ -20,6 +20,8 @@ interface ClientInterface
      *   - page (int): The index of the page to get, if the resource supports
      *     paging.
      *   - limit (int): The number of items to get.
+     *   - delay (int): The number of microseconds to wait after fetching a
+     *     page. It can be used to avoid hitting API rate limits.
      *   - bypass_iterator (bool): The items are normally returned wrapped in an
      *     API iterator. When the `bypass_iterator` option is set to, the items
      *     should be  returned without that extra wrapper iterator i.e. in just

@@ -13,6 +13,10 @@ namespace KrystalCode\ApiIterator;
  *    type     : improvement
  *    priority : normal
  *    labels   : iterator
+ * @I Support retries on throwables when calling `list` on the client
+ *    type     : feature
+ *    priority : normal
+ *    labels   : error-handling, iterator
  */
 class Iterator implements IteratorInterface
 {
@@ -25,6 +29,39 @@ class Iterator implements IteratorInterface
      * @var bool
      */
     protected $cache;
+
+    /**
+     * The seconds/nanoseconds to sleep after requesting a page.
+     *
+     * Some API have rate limits that could be hit when iterating over a large
+     * number of pages without a delay between page requests.
+     *
+     * For example:
+     * - API has a limit of 10 requests per second.
+     * - There's 50 pages for the query.
+     * - API responds to each request fast e.g. in milliseconds.
+     * - There's no delay between requesting the next page i.e. processing the
+     *   results is also fast.
+     *
+     * In such cases, looping over the iterator will result in hitting the API
+     * rate limits and some of the pages failing to be fetched.
+     *
+     * Providing a delay will instruct the iterator to sleep after fetching a
+     * page for that amount of time. For example, in the case above the delay
+     * could be set to 0 seconds and 100000000 nanoseconds (i.e. 0.1 seconds)
+     * which will ensure that the 10 requests per second will not be exceeded
+     * regardless of response and processing times.
+     *
+     * The delay must be given as an array containing the number of seconds in
+     * its first element and the number of nanoseconds in its second element.
+     *
+     * In the example above that would be [0, 100000000];
+     *
+     * @var array
+     *
+     * @see time_nanosleep()
+     */
+    protected $delay;
 
     /**
      * The client that will be used to make requests to the API.
@@ -82,13 +119,17 @@ class Iterator implements IteratorInterface
      *   the requests.
      * @param bool $cache
      *   Whether to reuse cached results or not.
+     * @param array $delay
+     *   A pair of seconds/nanoseconds that will determine the delay after
+     *   fetching a page.
      */
     public function __construct(
         ClientInterface $client,
         int $pageIndex = null,
         int $limit = null,
         array $query = [],
-        bool $cache = true
+        bool $cache = true,
+        array $delay = null
     ) {
         $this->client = $client;
 
@@ -101,6 +142,11 @@ class Iterator implements IteratorInterface
 
         $this->query = $query;
         $this->cache = $cache;
+
+        if ($delay) {
+            $this->delay = $delay;
+            $this->validateDelay();
+        }
     }
 
     /**
@@ -131,6 +177,11 @@ class Iterator implements IteratorInterface
         }
 
         $this->pages[$this->position]->rewind();
+
+        if ($this->delay !== null) {
+            time_nanosleep($this->delay[0], $this->delay[1]);
+        }
+
         return $this->pages[$this->position];
     }
 
@@ -273,5 +324,30 @@ class Iterator implements IteratorInterface
 
         $this->rewind();
         return $items;
+    }
+
+    /**
+     * Validates that the iterator delay is in the expected format.
+     *
+     * If set, it must be an array containing the seconds and nanoseconds as
+     * integer numbers, as expected by time_nanosleep().
+     *
+     * @throws \InvalidArgumentException
+     *   When the delay is set but in an incorrect format.
+     */
+    protected function validateDelay() {
+        if (!isset($this->delay)) {
+            return;
+        }
+        if (!isset($this->delay[0]) || !is_int($this->delay[0])) {
+            throw new \InvalidArgumentException(
+                'You must provide the seconds of the delay as an integer.'
+            );
+        }
+        if (!isset($this->delay[1]) || !is_int($this->delay[1])) {
+            throw new \InvalidArgumentException(
+                'You must provide the nanoseconds of the delay as an integer.'
+            );
+        }
     }
 }
