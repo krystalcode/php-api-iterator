@@ -172,8 +172,8 @@ class Iterator implements IteratorInterface
             $this->query
         );
 
-        if ($count === FALSE) {
-          $this->count = count($this->pages);
+        if ($count === false) {
+            $this->count = count($this->pages);
         }
 
         $this->pages[$this->position]->rewind();
@@ -230,7 +230,7 @@ class Iterator implements IteratorInterface
 
         // We don't always know the total number of pages.
         // See the comments in the `count` method.
-        if ($this->count !== NULL && $this->position > $this->count) {
+        if ($this->count !== null && $this->position > $this->count) {
             return false;
         }
 
@@ -335,7 +335,8 @@ class Iterator implements IteratorInterface
      * @throws \InvalidArgumentException
      *   When the delay is set but in an incorrect format.
      */
-    protected function validateDelay() {
+    protected function validateDelay()
+    {
         if (!isset($this->delay)) {
             return;
         }

@@ -49,5 +49,4 @@ interface ClientInterface
      *   paging.
      */
     public function list(array $options = [], array $query = []);
-
 }
