@@ -151,9 +151,21 @@ class Iterator implements IteratorInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException
+     *   If the current page index is an invalid position.
      */
     public function current(): \CachingIterator
     {
+        if (!$this->valid()) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Page "%s" is either an invalid page index or it exceeds the total number of pages available.',
+                    $pageIndex
+                )
+            );
+        }
+
         if ($this->cache && isset($this->pages[$this->position])) {
             $this->pages[$this->position]->rewind();
             return $this->pages[$this->position];
@@ -205,17 +217,7 @@ class Iterator implements IteratorInterface
      */
     public function next(): void
     {
-        // If we are not using cached results, let's remove them to reduce
-        // memory consumption.
-        // @I Write tests for whether items are removed when cache is disabled
-        //    type     : task
-        //    priority : low
-        //    labels   : testing
-        if (!$this->cache && $this->pages[$this->position]) {
-            $this->pages[$this->position] = null;
-        }
-
-        ++$this->position;
+        $this->move($this->position + 1);
     }
 
     /**
@@ -298,16 +300,17 @@ class Iterator implements IteratorInterface
      */
     public function move(int $pageIndex): void
     {
-        $this->position = $pageIndex;
-
-        if (!$this->valid()) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Page "%s" is either an invalid page index or it exceeds the total number of pages available.',
-                    $pageIndex
-                )
-            );
+        // If we are not using cached results, let's remove them to reduce
+        // memory consumption.
+        // @I Write tests for whether items are removed when cache is disabled
+        //    type     : task
+        //    priority : low
+        //    labels   : testing
+        if (!$this->cache && $this->pages[$this->position]) {
+            $this->pages[$this->position] = null;
         }
+
+        $this->position = $pageIndex;
     }
 
     /**
