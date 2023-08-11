@@ -173,7 +173,7 @@ class Iterator implements IteratorInterface
         );
 
         if ($count === false) {
-            $this->count = count($this->pages);
+            $this->count = $this->position;
         }
 
         $this->pages[$this->position]->rewind();
