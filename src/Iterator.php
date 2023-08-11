@@ -172,8 +172,15 @@ class Iterator implements IteratorInterface
             $this->query
         );
 
+        // `false` means that we have reached the last page.
         if ($count === false) {
             $this->count = $this->position;
+        }
+        // If we have a number, we must have been given the total number of
+        // pages or total count in the response. `null` means that we don't
+        // know yet.
+        elseif ($count !== null) {
+            $this->count = $count;
         }
 
         $this->pages[$this->position]->rewind();
