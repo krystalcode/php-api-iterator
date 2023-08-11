@@ -291,7 +291,10 @@ class Iterator implements IteratorInterface
      */
     public function get(int $pageIndex): \CachingIterator
     {
-        $this->move($pageIndex);
+        if ($this->position !== $pageIndex) {
+            $this->move($pageIndex);
+        }
+
         return $this->current();
     }
 
