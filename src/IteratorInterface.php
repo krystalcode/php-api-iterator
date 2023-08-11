@@ -81,9 +81,6 @@ interface IteratorInterface extends \Iterator
      *
      * @param int $pageIndex
      *   The index of the page to move the position to.
-     *
-     * @throws \InvalidArgumentException
-     *   If the given page index is invalid.
      */
     public function move(int $pageIndex): void;
 
