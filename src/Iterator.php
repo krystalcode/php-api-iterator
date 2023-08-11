@@ -257,11 +257,7 @@ class Iterator implements IteratorInterface
      */
     public function count(): ?int
     {
-        if ($this->count) {
-            return $this->count;
-        }
-
-        return null;
+        return $this->count;
     }
 
     /**
