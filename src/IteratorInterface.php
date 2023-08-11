@@ -25,9 +25,10 @@ interface IteratorInterface extends \Iterator
      * The total number of pages is generally not known before getting the items
      * for at least one page from the API. Other APIs do not provide the total
      * number of pages in the response; instead they provide a token or a link
-     * to the next page. In such cases we do not know the total number of pages
-     * until we iterate through all of them. This method returns `null` until
-     * the count is known.
+     * to the next page, or they provide just the results and the client has to
+     * browse them in pages until no results are returned. In such cases we do
+     * not know the total number of pages until we iterate through all of them.
+     * This method returns `null` until the count is known.
      *
      * @return int|null
      *   The total number of pages, or `null` if it is not known yet.

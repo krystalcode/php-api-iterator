@@ -35,8 +35,7 @@ interface ClientInterface
      *     items.
      *   - If the `bypass_iterator` option is set to `true`, an array containing
      *     the following elements in the given order.
-     *     - \CachingIterator: An iterator containing the list items; items are
-     *       `stdClass` objects.
+     *     - \CachingIterator: An iterator containing the items.
      *     - int|null|false: The total number of pages, NULL if unknown, or
      *       FALSE if unknown but we know that we have reached the last page.
      *     - array: The updated query array. This may be used to update the
